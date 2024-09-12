@@ -1,0 +1,76 @@
+create database studentmanagementsystem;
+use studentmanagementsystem;
+
+CREATE TABLE Students (
+    student_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    dob DATE,
+    email VARCHAR(100)
+);
+
+
+CREATE TABLE Courses (
+    course_id INT PRIMARY KEY AUTO_INCREMENT,
+    course_name VARCHAR(100) NOT NULL,
+    credit_hours INT NOT NULL
+);
+
+
+CREATE TABLE Enrollments (
+    enrollment_id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT,
+    course_id INT,
+    grade VARCHAR(2),
+    FOREIGN KEY (student_id) REFERENCES Students(student_id),
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+);
+
+INSERT INTO Students (first_name, last_name, dob, email) 
+VALUES 
+('John', 'Doe', '2001-01-15', 'john.doe@example.com'),
+('Jane', 'Smith', '2002-02-20', 'jane.smith@example.com');
+
+
+INSERT INTO Courses (course_name, credit_hours) 
+VALUES 
+('Mathematics', 3),
+('Computer Science', 4);
+
+
+INSERT INTO Enrollments (student_id, course_id, grade) 
+VALUES 
+(1, 1, 'A'),
+(2, 2, 'B');SELECT 
+    Students.first_name, 
+    Students.last_name, 
+    Courses.course_name 
+FROM 
+    Enrollments
+JOIN 
+    Students ON Enrollments.student_id = Students.student_id
+JOIN 
+    Courses ON Enrollments.course_id = Courses.course_id;
+SELECT 
+    Students.first_name, 
+    Students.last_name, 
+    Courses.course_name, 
+    Enrollments.grade 
+FROM 
+    Enrollments
+JOIN 
+    Students ON Enrollments.student_id = Students.student_id
+JOIN 
+    Courses ON Enrollments.course_id = Courses.course_id
+WHERE 
+    Students.student_id = 1;  -- Example for student with ID 1
+SELECT 
+    Courses.course_name, 
+    COUNT(Enrollments.student_id) AS student_count
+FROM 
+    Enrollments
+JOIN 
+    Courses ON Enrollments.course_id = Courses.course_id
+GROUP BY 
+    Courses.course_name;
+
