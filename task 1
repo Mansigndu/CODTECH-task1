@@ -1,0 +1,56 @@
+create database librarymanagementssystems;
+
+use librarymanagementssystems;
+CREATE TABLE Books (
+    book_id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255),
+    author VARCHAR(255),
+    publication_year INT,
+    genre VARCHAR(100),
+    available_copies INT
+);
+CREATE TABLE Members (
+    member_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    date_of_birth DATE,
+    email VARCHAR(100) UNIQUE,
+    phone VARCHAR(15),
+    membership_date DATE
+);
+CREATE TABLE Transactions (
+    transaction_id INT PRIMARY KEY AUTO_INCREMENT,
+    member_id INT,
+    book_id INT,
+    transaction_type ENUM('borrow', 'return'),
+    transaction_date DATE,
+    FOREIGN KEY (member_id) REFERENCES Members(member_id),
+    FOREIGN KEY (book_id) REFERENCES Books(book_id)
+);
+INSERT INTO Books (title, author, publication_year, genre, available_copies)
+VALUES ('The Great Gatsby', 'F. Scott Fitzgerald', 1925, 'Novel', 5);
+INSERT INTO Members (first_name, last_name, date_of_birth, email, phone, membership_date)
+VALUES ('Jane', 'Doe', '1990-05-15', 'jane.doe@example.com', '555-6789', '2024-01-01');
+INSERT INTO Transactions (member_id, book_id, transaction_type, transaction_date)
+VALUES (1, 1, 'borrow', '2024-09-12');
+UPDATE Books
+SET available_copies = available_copies - 1
+WHERE book_id = 1;
+UPDATE Members
+SET phone = '555-9876'
+WHERE member_id = 1;
+
+SELECT * FROM Books;
+SELECT t.transaction_id, b.title, t.transaction_type, t.transaction_date
+FROM Transactions t
+JOIN Books b ON t.book_id = b.book_id
+WHERE t.member_id = 1;
+SELECT * FROM Members;
+SELECT b.title, t.transaction_date
+FROM Transactions t
+JOIN Books b ON t.book_id = b.book_id
+WHERE t.member_id = 1 AND t.transaction_type = 'borrow';
+SELECT m.first_name, m.last_name, b.title, t.transaction_type, t.transaction_date
+FROM Transactions t
+JOIN Members m ON t.member_id = m.member_id
+JOIN Books b ON t.book_id = b.book_id;
