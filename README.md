@@ -13,7 +13,6 @@ OBJECTIVE
 The objective of student database management is to efficiently store, organize, and manage student information, including personal details, course enrollments, and academic performance. It enables easy access, retrieval, and analysis of student data for effective academic administration and decision-making.
 
 KEY ACTIVTIES
-Key activities of student database management include:
 
 Key activities of student database management in SQL include:
 
